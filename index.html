@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F2F2F7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DoShit">
+  <title>DoShit</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Today -->
+    <main id="view-today" class="view active" aria-labelledby="todayTitle">
+      <header class="topbar">
+        <span id="todayDate" class="eyebrow"></span>
+        <button id="btnSettings" class="icon-btn" aria-label="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+        </button>
+      </header>
+      <h1 id="todayTitle" class="large-title">Today</h1>
+
+      <section class="summary card" id="summary">
+        <svg class="ring" viewBox="0 0 80 80" aria-hidden="true">
+          <circle class="ring-track" cx="40" cy="40" r="34"/>
+          <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="34"/>
+        </svg>
+        <div class="summary-text">
+          <div id="summaryCount" class="summary-count"></div>
+          <div id="summaryLabel" class="summary-label"></div>
+        </div>
+        <div class="streak-badge" id="overallStreak" title="Days in a row with every habit done">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c.6 3-1 4.8-2.6 6.6C7.9 10.8 6.5 12.4 6.5 15a5.5 5.5 0 0 0 11 0c0-2.2-.9-3.9-1.9-5.2-.1 1.5-.8 2.6-2 3.1.5-3.7-.2-7.3-1.6-10.4Z"/></svg>
+          <span id="overallStreakNum">0</span>
+        </div>
+      </section>
+
+      <ul id="habitList" class="habit-list" aria-label="Habits due today"></ul>
+
+      <h2 id="laterHeader" class="section-header" hidden>Not today</h2>
+      <ul id="laterList" class="habit-list later" aria-label="Habits not due today"></ul>
+
+      <div id="emptyToday" class="empty" hidden>
+        <div class="empty-emoji">🌱</div>
+        <h2>Start your first habit</h2>
+        <p>Small things, every day. Tap + to add one.</p>
+        <button class="btn btn-primary" data-action="add">Add habit</button>
+      </div>
+    </main>
+
+    <!-- Progress -->
+    <main id="view-progress" class="view" aria-labelledby="progressTitle">
+      <header class="topbar"><span class="eyebrow">Your stats</span></header>
+      <h1 id="progressTitle" class="large-title">Progress</h1>
+
+      <section class="stat-row">
+        <div class="card stat">
+          <div class="stat-num flame-text" id="pStreak">0</div>
+          <div class="stat-label">Current streak</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-num" id="pBest">0</div>
+          <div class="stat-label">Best streak</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-num" id="pRate">0%</div>
+          <div class="stat-label">Last 30 days</div>
+        </div>
+      </section>
+
+      <h2 class="section-header">This week</h2>
+      <section class="card week" id="weekStrip"></section>
+
+      <h2 class="section-header">Last 12 weeks</h2>
+      <section class="card heat-card">
+        <div class="heatmap" id="heatmap"></div>
+        <div class="heat-legend"><span>Less</span><i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i><span>More</span></div>
+      </section>
+
+      <h2 class="section-header">Habits</h2>
+      <ul class="grouped" id="habitStats"></ul>
+    </main>
+
+    <!-- Tab bar -->
+    <nav class="tabbar" aria-label="Main">
+      <button class="tab active" data-tab="today">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16.5 9"/></svg>
+        <span>Today</span>
+      </button>
+      <button class="tab-add" data-action="add" aria-label="Add habit">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button class="tab" data-tab="progress">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>
+        <span>Progress</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Habit detail (pushed page) -->
+  <section id="pageDetail" class="page" aria-hidden="true">
+    <header class="nav-bar">
+      <button class="nav-btn" data-action="back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>Back
+      </button>
+      <button class="nav-btn" data-action="edit">Edit</button>
+    </header>
+    <div class="page-body" id="detailBody"></div>
+  </section>
+
+  <!-- Bottom sheets -->
+  <div id="backdrop" class="backdrop"></div>
+
+  <section id="sheetHabit" class="sheet" role="dialog" aria-modal="true" aria-labelledby="habitSheetTitle" aria-hidden="true">
+    <div class="grabber"></div>
+    <header class="sheet-head">
+      <button class="nav-btn" data-action="close">Cancel</button>
+      <h2 id="habitSheetTitle">New habit</h2>
+      <span class="nav-btn-spacer"></span>
+    </header>
+    <form id="habitForm" class="sheet-body" autocomplete="off">
+      <div class="preview">
+        <div class="preview-icon" id="previewIcon">💧</div>
+      </div>
+      <input id="habitName" class="field" name="name" maxlength="40" placeholder="Drink water" required>
+
+      <div class="label">Icon</div>
+      <div class="emoji-grid" id="emojiGrid"></div>
+
+      <div class="label">Colour</div>
+      <div class="swatches" id="swatches"></div>
+
+      <div class="label">Repeat</div>
+      <div class="segmented" id="repeatSeg">
+        <button type="button" data-repeat="daily" class="on">Every day</button>
+        <button type="button" data-repeat="custom">Pick days</button>
+      </div>
+      <div class="days" id="dayPicker" hidden></div>
+
+      <p class="form-error" id="formError" hidden></p>
+      <button type="submit" class="btn btn-primary btn-block" id="habitSubmit">Add habit</button>
+      <button type="button" class="btn btn-danger-text btn-block" id="habitDelete" hidden>Delete habit</button>
+    </form>
+  </section>
+
+  <section id="sheetSettings" class="sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+    <div class="grabber"></div>
+    <header class="sheet-head">
+      <span class="nav-btn-spacer"></span>
+      <h2 id="settingsTitle">Settings</h2>
+      <button class="nav-btn strong" data-action="close">Done</button>
+    </header>
+    <div class="sheet-body">
+      <div class="label">Appearance</div>
+      <div class="segmented" id="themeSeg">
+        <button type="button" data-theme="auto">Auto</button>
+        <button type="button" data-theme="light">Light</button>
+        <button type="button" data-theme="dark">Dark</button>
+      </div>
+
+      <div class="label">Your data</div>
+      <ul class="grouped">
+        <li><button class="row-btn" id="btnExport">Export backup</button></li>
+        <li><label class="row-btn" for="importFile">Import backup</label><input type="file" id="importFile" accept="application/json,.json" hidden></li>
+      </ul>
+      <p class="footnote">Everything is stored on this device only. Export a backup before switching phones.</p>
+
+      <ul class="grouped">
+        <li><button class="row-btn danger" id="btnErase">Erase all data</button></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Celebration -->
+  <section id="celebrate" class="overlay" aria-hidden="true" role="dialog" aria-labelledby="celebrateTitle">
+    <canvas id="confetti"></canvas>
+    <div class="celebrate-body">
+      <div class="big-check">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12.5 4 4 8-9"/></svg>
+      </div>
+      <h2 id="celebrateTitle">Day complete</h2>
+      <p id="celebrateSub"></p>
+      <div class="streak-pill" id="celebrateStreak"></div>
+      <div class="week-dots" id="celebrateDots"></div>
+    </div>
+    <button class="btn btn-success btn-block celebrate-btn" data-action="close-celebrate">Continue</button>
+  </section>
+
+  <!-- Onboarding -->
+  <section id="onboarding" class="overlay onboarding" aria-hidden="true" role="dialog" aria-labelledby="obTitle">
+    <div class="ob-body">
+      <div class="ob-hero">✅</div>
+      <h1 id="obTitle">Build habits<br>that stick</h1>
+      <p>Pick a few to start. You can change them any time.</p>
+      <div class="ob-grid" id="obGrid"></div>
+    </div>
+    <div class="ob-actions">
+      <button class="btn btn-primary btn-block" id="obStart">Pick at least one</button>
+      <button class="btn btn-plain btn-block" id="obSkip">I'll add my own</button>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
